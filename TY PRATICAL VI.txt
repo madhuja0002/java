@@ -1,0 +1,1399 @@
+SET A [JDBC]
+1) Write a java program to count number of records in a table.
+import java.sql.*;
+
+public class TableRecordCounter {
+   public static void main(String[] args) {
+      String url = "jdbc:mysql://localhost:3306/mydatabase";
+      String username = "root";
+      String password = "mypassword";
+      String tableName = "mytable";
+      int count = 0;
+
+      try {
+         // Load the MySQL JDBC driver
+         Class.forName("com.mysql.jdbc.Driver");
+
+         // Connect to the database
+         Connection conn = DriverManager.getConnection(url, username, password);
+
+         // Create a statement object
+         Statement stmt = conn.createStatement();
+
+         // Execute the query and get the result set
+         ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM " + tableName);
+
+         // Get the count from the result set
+         rs.next();
+         count = rs.getInt(1);
+
+         // Close the result set, statement, and connection
+         rs.close();
+         stmt.close();
+         conn.close();
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
+
+      System.out.println("The table " + tableName + " has " + count + " records.");
+   }
+}
+------------------------------------------------------------------------------------------------------------
+2) Write a java program to display all the EName from Emp table. Assume Emp (ENo,EName, Salary) table is already created
+import java.sql.*;
+
+public class EmpTableENames {
+   public static void main(String[] args) {
+      String url = "jdbc:mysql://localhost:3306/mydatabase";
+      String username = "root";
+      String password = "mypassword";
+      String tableName = "Emp";
+
+      try {
+         // Load the MySQL JDBC driver
+         Class.forName("com.mysql.jdbc.Driver");
+
+         // Connect to the database
+         Connection conn = DriverManager.getConnection(url, username, password);
+
+         // Create a statement object
+         Statement stmt = conn.createStatement();
+
+         // Execute the query and get the result set
+         ResultSet rs = stmt.executeQuery("SELECT EName FROM " + tableName);
+
+         // Iterate through the result set and print the ENames
+         while (rs.next()) {
+            String EName = rs.getString("EName");
+            System.out.println(EName);
+         }
+
+         // Close the result set, statement, and connection
+         rs.close();
+         stmt.close();
+         conn.close();
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
+   }
+}
+-------------------------------------------------------------------------------------------------------------
+3) Write a java program to create Student table with attributes Rno, Sname, Per.
+import java.sql.*;
+
+public class CreateStudentTable {
+   public static void main(String[] args) {
+      String url = "jdbc:mysql://localhost:3306/mydatabase";
+      String username = "root";
+      String password = "mypassword";
+      String tableName = "Student";
+
+      try {
+         // Load the MySQL JDBC driver
+         Class.forName("com.mysql.jdbc.Driver");
+
+         // Connect to the database
+         Connection conn = DriverManager.getConnection(url, username, password);
+
+         // Create a statement object
+         Statement stmt = conn.createStatement();
+
+         // Execute the query to create the table
+         String sql = "CREATE TABLE " + tableName + " (Rno INT NOT NULL, Sname VARCHAR(50), Per FLOAT, PRIMARY KEY (Rno))";
+         stmt.executeUpdate(sql);
+
+         // Close the statement and connection
+         stmt.close();
+         conn.close();
+
+         System.out.println("The " + tableName + " table has been created.");
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
+   }
+}
+---------------------------------------------------------------------------------------------------------------
+
+4) Write a java program to delete salary column from Emp table. Assume Emp table with attributes ENo, EName and salary is already created
+import java.sql.*;
+
+public class DeleteSalaryColumn {
+   public static void main(String[] args) {
+      String url = "jdbc:mysql://localhost:3306/mydatabase";
+      String username = "root";
+      String password = "mypassword";
+      String tableName = "Emp";
+
+      try {
+         // Load the MySQL JDBC driver
+         Class.forName("com.mysql.jdbc.Driver");
+
+         // Connect to the database
+         Connection conn = DriverManager.getConnection(url, username, password);
+
+         // Create a statement object
+         Statement stmt = conn.createStatement();
+
+         // Execute the query to delete the salary column
+         String sql = "ALTER TABLE " + tableName + " DROP COLUMN salary";
+         stmt.executeUpdate(sql);
+
+         // Close the statement and connection
+         stmt.close();
+         conn.close();
+
+         System.out.println("The salary column has been deleted from the " + tableName + " table.");
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
+   }
+}
+-----------------------------------------------------------------------------------------------------------
+
+SET B 
+
+5) Write a java program for the following:
+ Create a Table
+ Alter a Table
+ Drop a Table
+import java.sql.*;
+
+public class CreateTableAlterDrop {
+   public static void main(String[] args) {
+      String url = "jdbc:mysql://localhost:3306/mydatabase";
+      String username = "root";
+      String password = "mypassword";
+      String tableName = "ExampleTable";
+
+      try {
+         // Load the MySQL JDBC driver
+         Class.forName("com.mysql.jdbc.Driver");
+
+         // Connect to the database
+         Connection conn = DriverManager.getConnection(url, username, password);
+
+         // Create a statement object
+         Statement stmt = conn.createStatement();
+
+         // Execute the query to create the table
+         String sql = "CREATE TABLE " + tableName + " (id INT, name VARCHAR(50))";
+         stmt.executeUpdate(sql);
+
+         System.out.println("The " + tableName + " table has been created.");
+
+         // Execute the query to alter the table
+         sql = "ALTER TABLE " + tableName + " ADD age INT";
+         stmt.executeUpdate(sql);
+
+         System.out.println("The " + tableName + " table has been altered to add the age column.");
+
+         // Execute the query to drop the table
+         sql = "DROP TABLE " + tableName;
+         stmt.executeUpdate(sql);
+
+         System.out.println("The " + tableName + " table has been dropped.");
+
+         // Close the statement and connection
+         stmt.close();
+         conn.close();
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
+   }
+}
+---------------------------------------------------------------------------------------------------------
+
+6) Write a java program for the following:
+a. Create a table.
+b. Insert
+c. Update
+d. Search
+e. Display
+import java.sql.*;
+
+public class TableOperations {
+   public static void main(String[] args) {
+      String url = "jdbc:mysql://localhost:3306/mydatabase";
+      String username = "root";
+      String password = "mypassword";
+      String tableName = "Students";
+
+      try {
+         // Load the MySQL JDBC driver
+         Class.forName("com.mysql.jdbc.Driver");
+
+         // Connect to the database
+         Connection conn = DriverManager.getConnection(url, username, password);
+
+         // Create a statement object
+         Statement stmt = conn.createStatement();
+
+         // Create the table
+         String createTableSql = "CREATE TABLE " + tableName + " (id INT, name VARCHAR(50), age INT)";
+         stmt.executeUpdate(createTableSql);
+
+         System.out.println("The " + tableName + " table has been created.");
+
+         // Insert data into the table
+         String insertSql = "INSERT INTO " + tableName + " (id, name, age) VALUES (1, 'John', 25), (2, 'Mary', 30)";
+         stmt.executeUpdate(insertSql);
+
+         System.out.println("Data has been inserted into the " + tableName + " table.");
+
+         // Update data in the table
+         String updateSql = "UPDATE " + tableName + " SET age = 35 WHERE name = 'Mary'";
+         stmt.executeUpdate(updateSql);
+
+         System.out.println("Data has been updated in the " + tableName + " table.");
+
+         // Search data in the table
+         String searchSql = "SELECT * FROM " + tableName + " WHERE age >= 30";
+         ResultSet rs = stmt.executeQuery(searchSql);
+
+         while (rs.next()) {
+            int id = rs.getInt("id");
+            String name = rs.getString("name");
+            int age = rs.getInt("age");
+            System.out.println("ID: " + id + ", Name: " + name + ", Age: " + age);
+         }
+
+         // Display all data in the table
+         String displaySql = "SELECT * FROM " + tableName;
+         rs = stmt.executeQuery(displaySql);
+
+         while (rs.next()) {
+            int id = rs.getInt("id");
+            String name = rs.getString("name");
+            int age = rs.getInt("age");
+            System.out.println("ID: " + id + ", Name: " + name + ", Age: " + age);
+         }
+
+         // Close the result set, statement, and connection
+         rs.close();
+         stmt.close();
+         conn.close();
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
+   }
+}
+--------------------------------------------------------------------------------------------------------------
+
+7) Write a java program for the following:
+Accept the details of 5 Employees (ENo, EName, Salary), store it into the JTable by
+clicking on Add Button. If user clicks on Save button then data from JTable must be
+save into the database. 
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+
+public class EmployeeDetails {
+   private JFrame frame;
+   private JPanel panel;
+   private JLabel enoLabel, enameLabel, salaryLabel;
+   private JTextField enoField, enameField, salaryField;
+   private JButton addButton, saveButton;
+   private JTable table;
+   private DefaultTableModel tableModel;
+
+   private String[] columnNames = {"ENo", "EName", "Salary"};
+   private Object[][] data = new Object[5][3];
+
+   public static void main(String[] args) {
+      EmployeeDetails empDetails = new EmployeeDetails();
+      empDetails.createUI();
+   }
+
+   private void createUI() {
+      frame = new JFrame("Employee Details");
+      frame.setSize(500, 300);
+      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+      panel = new JPanel(new GridBagLayout());
+      GridBagConstraints c = new GridBagConstraints();
+      c.insets = new Insets(5, 5, 5, 5);
+
+      enoLabel = new JLabel("ENo:");
+      c.gridx = 0;
+      c.gridy = 0;
+      panel.add(enoLabel, c);
+
+      enoField = new JTextField(10);
+      c.gridx = 1;
+      c.gridy = 0;
+      panel.add(enoField, c);
+
+      enameLabel = new JLabel("EName:");
+      c.gridx = 0;
+      c.gridy = 1;
+      panel.add(enameLabel, c);
+
+      enameField = new JTextField(10);
+      c.gridx = 1;
+      c.gridy = 1;
+      panel.add(enameField, c);
+
+      salaryLabel = new JLabel("Salary:");
+      c.gridx = 0;
+      c.gridy = 2;
+      panel.add(salaryLabel, c);
+
+      salaryField = new JTextField(10);
+      c.gridx = 1;
+      c.gridy = 2;
+      panel.add(salaryField, c);
+
+      addButton = new JButton("Add");
+      c.gridx = 0;
+      c.gridy = 3;
+      addButton.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e) {
+            String eno = enoField.getText();
+            String ename = enameField.getText();
+            String salary = salaryField.getText();
+
+            if (eno.isEmpty() || ename.isEmpty() || salary.isEmpty()) {
+               JOptionPane.showMessageDialog(frame, "Please enter all fields.");
+            } else {
+               int row = table.getSelectedRow();
+               if (row == -1) {
+                  row = tableModel.getRowCount();
+                  if (row < 5) {
+                     tableModel.addRow(new Object[]{eno, ename, salary});
+                     enoField.setText("");
+                     enameField.setText("");
+                     salaryField.setText("");
+                  } else {
+                     JOptionPane.showMessageDialog(frame, "Maximum of 5 records allowed.");
+                  }
+               } else {
+                  tableModel.setValueAt(eno, row, 0);
+                  tableModel.setValueAt(ename, row, 1);
+                  tableModel.setValueAt(salary, row, 2);
+                  enoField.setText("");
+                  enameField.setText("");
+                  salaryField.setText("");
+               }
+            }
+         }
+      });
+      panel.add(addButton, c);
+
+      tableModel = new DefaultTableModel(data, columnNames);
+      table = new JTable(tableModel);
+      JScrollPane scrollPane = new JScrollPane(table);
+-----------------------------------------------------------------------------------------------------------
+   
+8) Write a java program to create at least 5 tables in a database. Add a column(field) in a given table. Drop given table from the database.
+
+import java.sql.*;
+
+public class DatabaseOperations {
+   private static final String DB_URL = "jdbc:mysql://localhost/mydatabase";
+   private static final String DB_USER = "root";
+   private static final String DB_PASSWORD = "mypassword";
+
+   public static void main(String[] args) {
+      Connection conn = null;
+      Statement stmt = null;
+
+      try {
+         Class.forName("com.mysql.jdbc.Driver");
+
+         System.out.println("Connecting to database...");
+         conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+
+         System.out.println("Creating tables...");
+         stmt = conn.createStatement();
+         String sql1 = "CREATE TABLE Employees ("
+            + "id INT NOT NULL AUTO_INCREMENT,"
+            + "name VARCHAR(50) NOT NULL,"
+            + "age INT NOT NULL,"
+            + "PRIMARY KEY (id))";
+         stmt.executeUpdate(sql1);
+         String sql2 = "CREATE TABLE Departments ("
+            + "id INT NOT NULL AUTO_INCREMENT,"
+            + "name VARCHAR(50) NOT NULL,"
+            + "location VARCHAR(50) NOT NULL,"
+            + "PRIMARY KEY (id))";
+         stmt.executeUpdate(sql2);
+         String sql3 = "CREATE TABLE Projects ("
+            + "id INT NOT NULL AUTO_INCREMENT,"
+            + "name VARCHAR(50) NOT NULL,"
+            + "budget INT NOT NULL,"
+            + "PRIMARY KEY (id))";
+         stmt.executeUpdate(sql3);
+         String sql4 = "CREATE TABLE Assignments ("
+            + "id INT NOT NULL AUTO_INCREMENT,"
+            + "employee_id INT NOT NULL,"
+            + "project_id INT NOT NULL,"
+            + "hours INT NOT NULL,"
+            + "PRIMARY KEY (id),"
+            + "FOREIGN KEY (employee_id) REFERENCES Employees(id),"
+            + "FOREIGN KEY (project_id) REFERENCES Projects(id))";
+         stmt.executeUpdate(sql4);
+         String sql5 = "CREATE TABLE Salaries ("
+            + "id INT NOT NULL AUTO_INCREMENT,"
+            + "employee_id INT NOT NULL,"
+            + "amount INT NOT NULL,"
+            + "PRIMARY KEY (id),"
+            + "FOREIGN KEY (employee_id) REFERENCES Employees(id))";
+         stmt.executeUpdate(sql5);
+
+         System.out.println("Adding column to Employees table...");
+         String sql6 = "ALTER TABLE Employees ADD COLUMN salary INT NOT NULL";
+         stmt.executeUpdate(sql6);
+
+         System.out.println("Dropping Projects table...");
+         String sql7 = "DROP TABLE Projects";
+         stmt.executeUpdate(sql7);
+
+         System.out.println("All database operations completed successfully.");
+      } catch (ClassNotFoundException | SQLException e) {
+         e.printStackTrace();
+      } finally {
+         try {
+            if (stmt != null) stmt.close();
+         } catch (SQLException e) {
+            e.printStackTrace();
+         }
+         try {
+            if (conn != null) conn.close();
+         } catch (SQLException e) {
+            e.printStackTrace();
+         }
+      }
+   }
+}
+---------------------------------------------------------------------------------------------------------
+
+SET A [MULTI-THREADING]
+9) Write a multithreading program in java to display all the integers between 1 to 100 randomly after 2 seconds.
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+
+public class RandomNumberThread extends Thread {
+    public void run() {
+        Random rand = new Random();
+        for (int i = 1; i <= 100; i++) {
+            int num = rand.nextInt(100) + 1;
+            System.out.println(num);
+            try {
+                TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        RandomNumberThread t = new RandomNumberThread();
+        t.start();
+    }
+}
+-----------------------------------------------------------------------------------------------------------
+
+10) Write a multithreading program in java to display all the characters between Z to A after 5 seconds.
+import java.util.concurrent.TimeUnit;
+
+public class ReverseAlphabetThread extends Thread {
+    public void run() {
+        for (char c = 'Z'; c >= 'A'; c--) {
+            System.out.println(c);
+            try {
+                TimeUnit.SECONDS.sleep(5);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        ReverseAlphabetThread t = new ReverseAlphabetThread();
+        t.start();
+    }
+}
+------------------------------------------------------------------------------------------------------------
+
+11) Write a java program to print “Hello Java” message 10 times. 
+public class HelloWorld {
+    public static void main(String[] args) {
+        for (int i = 0; i < 10; i++) {
+            System.out.println("Hello Java");
+        }
+    }
+}
+----------------------------------------------------------------------------------------------------------
+
+12) Write a program in which thread sleep for 6 sec in the loop in reverse order from 100 to 1 and change the name of thread. 
+public class ReverseCountThread extends Thread {
+    public ReverseCountThread(String name) {
+        super(name);
+    }
+
+    public void run() {
+        for (int i = 100; i > 0; i--) {
+            System.out.println(Thread.currentThread().getName() + ": " + i);
+            try {
+                Thread.sleep(6000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        ReverseCountThread t = new ReverseCountThread("CustomThread");
+        t.start();
+    }
+}
+---------------------------------------------------------------------------------------------------------
+
+13) Write a java program to display all the vowels from a given String. Each vowel should display after 3 seconds.
+public class VowelThread extends Thread {
+    private String text;
+
+    public VowelThread(String text) {
+        this.text = text;
+    }
+
+    public void run() {
+        char[] chars = text.toCharArray();
+        for (char ch : chars) {
+            if ("AEIOUaeiou".indexOf(ch) != -1) {
+                System.out.println(ch);
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        String text = "This is a sample string with vowels";
+        VowelThread t = new VowelThread(text);
+        t.start();
+    }
+}
+------------------------------------------------------------------------------------------------------------
+
+SET B
+
+14) Program to define a thread for printing text on output screen for ‘n’ number of times.Create 3 threads and run them. Pass the text ‘n’ parameters to the thread constructor.
+Example:
+i. First thread prints “Hello” 10 times.
+ii. Second thread prints “Good Morning” 20 times
+iii. Third thread prints “Sir/Mam” 30 times.
+
+class TextThread extends Thread {
+    private String text;
+    private int count;
+
+    public TextThread(String text, int count) {
+        this.text = text;
+        this.count = count;
+    }
+
+    public void run() {
+        for (int i = 1; i <= count; i++) {
+            System.out.println(text);
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        TextThread thread1 = new TextThread("Hello", 10);
+        TextThread thread2 = new TextThread("Good Morning", 20);
+        TextThread thread3 = new TextThread("Sir/Mam", 30);
+
+        thread1.start();
+        thread2.start();
+        thread3.start();
+    }
+}
+-----------------------------------------------------------------------------------------------------------
+
+15) Write a java program in multithreading to create 3 balls and bounce them vertically.
+import javax.swing.*;
+import java.awt.*;
+import java.util.Random;
+
+public class BallBounce extends JPanel implements Runnable {
+
+    private int x, y, diameter;
+    private int xSpeed, ySpeed;
+    private Color color;
+    private Random random;
+
+    public BallBounce(int x, int y, int diameter, Color color) {
+        this.x = x;
+        this.y = y;
+        this.diameter = diameter;
+        this.color = color;
+        this.random = new Random();
+        this.xSpeed = random.nextInt(5) + 1;
+        this.ySpeed = random.nextInt(5) + 1;
+    }
+
+    public void move() {
+        x += xSpeed;
+        y += ySpeed;
+
+        if (x < 0 || x > getWidth() - diameter) {
+            xSpeed = -xSpeed;
+        }
+
+        if (y < 0 || y > getHeight() - diameter) {
+            ySpeed = -ySpeed;
+        }
+    }
+
+    public void run() {
+        while (true) {
+            move();
+            repaint();
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.setColor(color);
+        g.fillOval(x, y, diameter, diameter);
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Ball Bounce");
+
+        BallBounce ball1 = new BallBounce(50, 50, 50, Color.RED);
+        BallBounce ball2 = new BallBounce(150, 150, 70, Color.BLUE);
+        BallBounce ball3 = new BallBounce(250, 250, 90, Color.GREEN);
+
+        Thread thread1 = new Thread(ball1);
+        Thread thread2 = new Thread(ball2);
+        Thread thread3 = new Thread(ball3);
+
+        frame.add(ball1);
+        frame.add(ball2);
+        frame.add(ball3);
+
+        frame.setLayout(new GridLayout(3, 1));
+        frame.setSize(400, 400);
+        frame.setVisible(true);
+
+        thread1.start();
+        thread2.start();
+        thread3.start();
+    }
+}
+--------------------------------------------------------------------------------------------------------------
+
+16) Write a java program in multithreading to draw five lines vertically
+import java.awt.*;
+import javax.swing.*;
+
+public class VerticalLines extends JFrame implements Runnable {
+    private Thread thread;
+
+    public VerticalLines() {
+        setTitle("Vertical Lines");
+        setSize(300, 300);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
+
+        thread = new Thread(this);
+        thread.start();
+    }
+
+    public void run() {
+        while (true) {
+            try {
+                Thread.sleep(1000); // pause for 1 second
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            repaint(); // redraw the lines
+        }
+    }
+
+    public void paint(Graphics g) {
+        super.paint(g);
+        g.setColor(Color.BLACK);
+        int x = 50; // starting x-coordinate
+        for (int i = 0; i < 5; i++) {
+            int y = 50; // starting y-coordinate
+            int height = 100; // line height
+            g.drawLine(x, y, x, y + height); // draw the line
+            x += 50; // increment x-coordinate for the next line
+        }
+    }
+
+    public static void main(String[] args) {
+        new VerticalLines();
+    }
+}
+-------------------------------------------------------------------------------------------------------------
+
+17) Write a java program to display the characters from a given string into the TextField.Each character should be displayed after 1 second.
+import java.awt.*;
+import javax.swing.*;
+
+public class StringDisplay extends JFrame implements Runnable {
+    private Thread thread;
+    private String text;
+    private JTextField textField;
+    private int index;
+
+    public StringDisplay(String text) {
+        this.text = text;
+        setTitle("String Display");
+        setSize(300, 100);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
+
+        textField = new JTextField();
+        textField.setEditable(false);
+        add(textField, BorderLayout.CENTER);
+
+        thread = new Thread(this);
+        thread.start();
+    }
+
+    public void run() {
+        while (index < text.length()) {
+            try {
+                Thread.sleep(1000); // pause for 1 second
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            textField.setText(text.substring(0, index + 1)); // display the next character
+            index++;
+        }
+    }
+
+    public static void main(String[] args) {
+        StringDisplay stringDisplay = new StringDisplay("Hello Java"); // create a new instance
+        stringDisplay.setVisible(true); // show the window
+    }
+}
+-----------------------------------------------------------------------------------------------------------
+
+SET C 
+
+18) Write a java program for drawing simple house.
+import java.awt.*;
+import javax.swing.*;
+
+public class SimpleHouse extends JFrame {
+    public SimpleHouse() {
+        setTitle("Simple House");
+        setSize(400, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
+    }
+
+    public void paint(Graphics g) {
+        super.paint(g);
+        g.setColor(Color.RED);
+        g.fillRect(50, 250, 200, 100); // draw the house body
+        g.setColor(Color.BLUE);
+        g.drawLine(50, 250, 150, 150); // draw the roof
+        g.drawLine(150, 150, 250, 250);
+        g.drawLine(250, 250, 50, 250);
+        g.setColor(Color.YELLOW);
+        g.fillRect(90, 290, 40, 60); // draw the door
+        g.setColor(Color.GREEN);
+        g.fillOval(210, 280, 50, 50); // draw a window
+    }
+
+    public static void main(String[] args) {
+        SimpleHouse simpleHouse = new SimpleHouse(); // create a new instance
+    }
+}
+----------------------------------------------------------------------------------------------------------
+SET A [SOCKET PROGRAMMING]
+
+19) Write a java program to display IP address of a machine
+import java.net.*;
+
+public class IPAddress {
+    public static void main(String[] args) {
+        try {
+            InetAddress ipAddress = InetAddress.getLocalHost();
+            System.out.println("IP address of this machine is: " + ipAddress.getHostAddress());
+        } catch (UnknownHostException e) {
+            System.out.println("Could not find IP address for this machine.");
+        }
+    }
+}
+------------------------------------------------------------------------------------------------------------
+
+20)Write a java program to send “Hi” message to the Server
+import java.io.*;
+import java.net.*;
+
+public class SendMessage {
+    public static void main(String[] args) {
+        try {
+            Socket socket = new Socket("localhost", 8080); // Replace "localhost" with the server IP address
+            OutputStream outputStream = socket.getOutputStream();
+            PrintWriter writer = new PrintWriter(outputStream, true);
+            writer.println("Hi"); // Send "Hi" message to the server
+            socket.close(); // Close the socket
+        } catch (UnknownHostException e) {
+            System.out.println("Could not find server.");
+        } catch (IOException e) {
+            System.out.println("Error sending message: " + e.getMessage());
+        }
+    }
+}
+--------------------------------------------------------------------------------------------------------------
+
+SET B
+
+21) Write a java program for standalone chatting application
+import java.io.*;
+import java.net.*;
+import java.util.*;
+import javax.swing.*;
+
+public class Server extends JFrame implements Runnable {
+    
+    private JTextArea messagesArea;
+    private JTextField messageField;
+    private ServerSocket serverSocket;
+    private List<ClientThread> clientThreads;
+    
+    public Server() {
+        super("Server");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(400, 400);
+        setLocationRelativeTo(null);
+        setResizable(false);
+        
+        // Create the messages area
+        messagesArea = new JTextArea();
+        messagesArea.setEditable(false);
+        messagesArea.setLineWrap(true);
+        JScrollPane scrollPane = new JScrollPane(messagesArea);
+        add(scrollPane);
+        
+        // Create the message field
+        messageField = new JTextField();
+        messageField.addActionListener(e -> {
+            String message = messageField.getText();
+            if (!message.isEmpty()) {
+                broadcastMessage("Server: " + message);
+                messageField.setText("");
+            }
+        });
+        add(messageField, "South");
+        
+        // Create the server socket and client thread list
+        serverSocket = null;
+        clientThreads = new ArrayList<>();
+        
+        setVisible(true);
+    }
+    
+    @Override
+    public void run() {
+        try {
+            serverSocket = new ServerSocket(8000);
+            while (true) {
+                Socket clientSocket = serverSocket.accept();
+                ClientThread clientThread = new ClientThread(clientSocket);
+                clientThreads.add(clientThread);
+                clientThread.start();
+                broadcastMessage("New client connected: " + clientSocket.getInetAddress().getHostAddress());
+            }
+        } catch (IOException e) {
+            System.out.println("Server error: " + e.getMessage());
+        }
+    }
+    
+    public void broadcastMessage(String message) {
+        SwingUtilities.invokeLater(() -> messagesArea.append(message + "\n"));
+        for (ClientThread clientThread : clientThreads) {
+            clientThread.sendMessage(message);
+        }
+    }
+    
+    private class ClientThread extends Thread {
+        
+        private Socket clientSocket;
+        private BufferedReader reader;
+        private PrintWriter writer;
+        
+        public ClientThread(Socket clientSocket) {
+            this.clientSocket = clientSocket;
+            try {
+                reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                writer = new PrintWriter(clientSocket.getOutputStream(), true);
+            } catch (IOException e) {
+                System.out.println("Client thread error: " + e.getMessage());
+            }
+        }
+        
+        @Override
+        public void run() {
+            try {
+                String message;
+                while ((message = reader.readLine()) != null) {
+                    broadcastMessage(clientSocket.getInetAddress().getHostAddress() + ": " + message);
+                }
+                clientThreads.remove(this);
+                broadcastMessage("Client disconnected: " + clientSocket.getInetAddress().getHostAddress());
+                clientSocket.close();
+            } catch (IOException e) {
+                System.out.println("Client thread error: " + e.getMessage());
+            }
+        }
+        
+        public void sendMessage(String message) {
+            writer.println(message);
+        }
+    }
+    
+    public static void main(String[] args) {
+        Server server = new Server();
+        Thread thread = new Thread(server);
+        thread.start();
+    }
+}
+------------------------------------------------------------------------------------------------------------
+
+SERVLET AND JSP 
+
+22)esign a servlet that provides information about a HTTP request from a client, such as IP address and browser type. The servlet also provides information about the server on which the servlet is running, such as the operating system type, and the names of currently loaded servlets.
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.util.Date;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class RequestInfoServlet extends HttpServlet {
+    
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        // Get client information
+        String ipAddress = request.getRemoteAddr();
+        String browser = request.getHeader("User-Agent");
+        String protocol = request.getProtocol();
+
+        // Get server information
+        InetAddress address = InetAddress.getLocalHost();
+        String serverName = address.getHostName();
+        String serverIp = address.getHostAddress();
+        String osName = System.getProperty("os.name");
+        String osVersion = System.getProperty("os.version");
+        String servletName = getServletConfig().getServletName();
+
+        // Generate response HTML
+        out.println("<html><body>");
+        out.println("<h1>HTTP Request Information</h1>");
+        out.println("<p>IP Address: " + ipAddress + "</p>");
+        out.println("<p>Browser Type: " + browser + "</p>");
+        out.println("<p>Protocol: " + protocol + "</p>");
+        out.println("<h1>Server Information</h1>");
+        out.println("<p>Server Name: " + serverName + "</p>");
+        out.println("<p>Server IP: " + serverIp + "</p>");
+        out.println("<p>Operating System: " + osName + " " + osVersion + "</p>");
+        out.println("<p>Servlet Name: " + servletName + "</p>");
+        out.println("</body></html>");
+    }
+}
+-----------------------------------------------------------------------------------------------------------
+
+23) Write a Servlet application to display Hello Java Message on the Browser
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class HelloWorldServlet extends HttpServlet {
+    
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+        out.println("<html><body>");
+        out.println("<h1>Hello Java!</h1>");
+        out.println("</body></html>");
+    }
+}
+---------------------------------------------------------------------------------------------------------------
+
+24) Write a JSP script to display all the prime number’s between 1 to n in Red Color. 
+
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Prime Numbers</title>
+</head>
+<body>
+	<h1>Prime Numbers</h1>
+	<%
+		int n = 50;
+		boolean isPrime = true;
+		for(int i=2; i<=n; i++) {
+			isPrime = true;
+			for(int j=2; j<=i/2; j++) {
+				if(i%j == 0) {
+					isPrime = false;
+					break;
+				}
+			}
+			if(isPrime) {
+				out.print("<span style='color:red'>" + i + "</span> ");
+			} else {
+				out.print(i + " ");
+			}
+		}
+	%>
+</body>
+</html>
+
+------------------------------------------------------------------------------------------------------------
+
+25) Write a JSP application to accept the details of Emp (Eno, EName, Salary) and display 
+it in Tabular format on the browser.
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Details</title>
+</head>
+<body>
+    <h1>Employee Details</h1>
+    <form method="post" action="EmployeeDetails.jsp">
+        <table>
+            <tr>
+                <td>Eno:</td>
+                <td><input type="text" name="eno"></td>
+            </tr>
+            <tr>
+                <td>EName:</td>
+                <td><input type="text" name="ename"></td>
+            </tr>
+            <tr>
+                <td>Salary:</td>
+                <td><input type="text" name="salary"></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" value="Submit"></td>
+            </tr>
+        </table>
+    </form>
+    <%-- Check if the form has been submitted --%>
+    <%
+        if ("POST".equalsIgnoreCase(request.getMethod())) {
+            // Get the values of Eno, EName, and Salary from the request parameters
+            int eno = Integer.parseInt(request.getParameter("eno"));
+            String ename = request.getParameter("ename");
+            double salary = Double.parseDouble(request.getParameter("salary"));
+
+            // Display the employee details in a tabular format
+            out.println("<table>");
+            out.println("<tr><th>Eno</th><th>EName</th><th>Salary</th></tr>");
+            out.println("<tr><td>" + eno + "</td><td>" + ename + "</td><td>" + salary + "</td></tr>");
+            out.println("</table>");
+        }
+    %>
+</body>
+</html>
+------------------------------------------------------------------------------------------------------------
+
+26)  Write a Servlet program to display the details of PATIENT (PatientNo, PatientName, PatientAddress, Patientage, PatientDiease) in tabular form on browser.
+
+						HTML Code
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Patient Details</title>
+</head>
+<body>
+	<h1>Patient Details</h1>
+	<table border="1">
+		<tr>
+			<th>Patient No</th>
+			<th>Name</th>
+			<th>Address</th>
+			<th>Age</th>
+			<th>Disease</th>
+		</tr>
+		<c:forEach var="patient" items="${patientList}">
+			<tr>
+				<td>${patient.PatientNo}</td>
+				<td>${patient.PatientName}</td>
+				<td>${patient.PatientAddress}</td>
+				<td>${patient.Patientage}</td>
+				<td>${patient.PatientDiease}</td>
+			</tr>
+		</c:forEach>
+	</table>
+</body>
+</html>
+
+								----------------
+								Servlet Code
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/PatientServlet")
+public class PatientServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	
+	private Connection conn;
+	
+	public void init() throws ServletException {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/hospital", "root", "password");
+		} catch (ClassNotFoundException e) {
+			throw new ServletException("Unable to load JDBC driver.", e);
+		} catch (SQLException e) {
+			throw new ServletException("Unable to connect to database.", e);
+		}
+	}
+	
+	public void destroy() {
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			getServletContext().log("Unable to close JDBC Connection.", e);
+		}
+	}
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		List<Patient> patientList = new ArrayList<Patient>();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			stmt = conn.prepareStatement("SELECT * FROM patient");
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				Patient patient = new Patient();
+				patient.setPatientNo(rs.getInt("PatientNo"));
+				patient.setPatientName(rs.getString("PatientName"));
+				patient.setPatientAddress(rs.getString("PatientAddress"));
+				patient.setPatientage(rs.getInt("Patientage"));
+				patient.setPatientDiease(rs.getString("PatientDiease"));
+				patientList.add(patient);
+			}
+		} catch (SQLException e) {
+			throw new ServletException("Unable to retrieve patient details.", e);
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (stmt != null) {
+					stmt.close();
+				}
+			} catch (SQLException e) {
+				getServletContext().log("Unable to
+-----------------------------------------------------------------------------------------------------------
+
+27) Write a JSP application to accept a user name and greets to the user according to the system Time.
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome User</title>
+</head>
+<body>
+    <%
+        String userName = request.getParameter("username");
+        String greeting;
+
+        // Get the current hour of the day
+        int hour = java.time.LocalTime.now().getHour();
+
+        // Determine the appropriate greeting based on the current hour
+        if (hour >= 5 && hour < 12) {
+            greeting = "Good morning";
+        } else if (hour >= 12 && hour < 18) {
+            greeting = "Good afternoon";
+        } else {
+            greeting = "Good evening";
+        }
+
+        // Display the greeting message
+        out.println("<h1>" + greeting + ", " + userName + "!</h1>");
+    %>
+</body>
+</html>
+-----------------------------------------------------------------------------------------------------------
+
+28)  Create a JSP page for an online multiple choice test. The questions are randomly selected from a database and displayed on the screen. The choices are displayed using radio buttons. When the user clicks on next, the next question is displayed.When the user clicks on submit, display the total score on the screen.
+
+<%@ page import="java.sql.*" %>
+<%@ page import="java.util.*" %>
+<%@ page import="java.io.*" %>
+
+<%
+// establish database connection
+String dbURL = "jdbc:mysql://localhost:3306/mydb";
+String dbUser = "root";
+String dbPass = "password";
+Class.forName("com.mysql.jdbc.Driver");
+Connection conn = DriverManager.getConnection(dbURL, dbUser, dbPass);
+
+// retrieve random questions from database
+String sql = "SELECT * FROM questions ORDER BY RAND() LIMIT 5";
+Statement stmt = conn.createStatement();
+ResultSet rs = stmt.executeQuery(sql);
+
+// initialize variables
+int score = 0;
+int questionNum = 1;
+
+// display questions and choices using radio buttons
+while (rs.next()) {
+    String question = rs.getString("question");
+    String choiceA = rs.getString("choiceA");
+    String choiceB = rs.getString("choiceB");
+    String choiceC = rs.getString("choiceC");
+    String answer = rs.getString("answer");
+    
+    out.println("<h2>Question " + questionNum + ": " + question + "</h2>");
+    out.println("<input type='radio' name='q" + questionNum + "' value='A'>" + choiceA + "<br>");
+    out.println("<input type='radio' name='q" + questionNum + "' value='B'>" + choiceB + "<br>");
+    out.println("<input type='radio' name='q" + questionNum + "' value='C'>" + choiceC + "<br>");
+    
+    // increment question number
+    questionNum++;
+    
+    // check user's answer
+    String userAnswer = request.getParameter("q" + (questionNum - 1));
+    if (userAnswer != null && userAnswer.equals(answer)) {
+        score++;
+    }
+}
+
+// calculate score
+int percent = (score * 100) / 5;
+
+// display score
+out.println("<h2>Your score: " + score + "/5 (" + percent + "%)</h2>");
+
+// close database connection
+rs.close();
+stmt.close();
+conn.close();
+%>
+----------------------------------------------------------------------------------------------------------
+
+29) Write a JSP application to accept the details of Teacher (TID, TName, Salary) and display it in tabular format.
+
+                   HTML Code
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Teacher Details Form</title>
+</head>
+<body>
+	<h2>Enter Teacher Details</h2>
+	<form action="teacher-details.jsp" method="post">
+		<label for="tid">Teacher ID:</label>
+		<input type="text" id="tid" name="tid" required><br><br>
+		<label for="tname">Teacher Name:</label>
+		<input type="text" id="tname" name="tname" required><br><br>
+		<label for="salary">Salary:</label>
+		<input type="number" id="salary" name="salary" required><br><br>
+		<input type="submit" value="Submit">
+		<input type="reset" value="Reset">
+	</form>
+</body>
+</html>
+							 ----------------
+								jsp Code
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Teacher Details</title>
+</head>
+<body>
+	<h2>Teacher Details</h2>
+	<table>
+		<tr>
+			<th>Teacher ID</th>
+			<th>Teacher Name</th>
+			<th>Salary</th>
+		</tr>
+		<tr>
+			<td><%= request.getParameter("tid") %></td>
+			<td><%= request.getParameter("tname") %></td>
+			<td><%= request.getParameter("salary") %></td>
+		</tr>
+	</table>
+</body>
+</html>
+----------------------------------------------------------------------------------------------------------
+
+		Spring and Hibernate
+
+30)  Write a program to display the Current Date using spring 
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import java.util.Date;
+
+public class DatePrinter {
+    public static void main(String[] args) {
+        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        Date date = (Date) context.getBean("currentDate");
+        System.out.println(date);
+    }
+}
+
+
+<bean id="currentDate" class="java.util.Date" />
+
+
+
+
+
